@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="jumbotron">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <p class="lead">{{ question }}</p>
+        <hr class="my-4">
+        <form method="POST" action="/answer" name="survey-choice">
+            <div class="input-group mb-3">
+                <ul>
+                    {% for choice in choices %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="survey-choice" id="{{ choice }}" value="{{ choice }}">
+                            <label class="form-check-label" for="{{ choice }}">
+                                {{ choice }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+            <p class="lead text-right">
+                <button class="btn btn-primary" type="submit">Next</button>
+            </p>
+        </form>
+    </div>
+{% endblock %}
