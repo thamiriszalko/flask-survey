@@ -25,13 +25,20 @@ def start_survey():
     )
 
 
+@app.route('/handle_start', methods=["POST"])
+def handle_start():
+    session['responses'] = []
+
+    return redirect('/question/0')
+
+
 @app.route('/answer', methods=["POST"])
 def answered_question():
     try:
         choice = request.form['survey-choice']
         responses.append(choice)
+        session['responses'] = responses
         if len(responses) == len(surveys['satisfaction'].questions):
-            responses.clear()
             next_step = redirect('/finished')
         else:
             next_step = redirect(f'/question/{len(responses)}')
@@ -44,6 +51,7 @@ def answered_question():
 @app.route('/question/<int:index>', methods=["POST", "GET"])
 def questions(index):
     if index != len(responses):
+        print(responses, '*******************', session['responses'])
         flash(
             'You tried to access an invalid question. '
             'Please, answer the question bellow.'
